@@ -1,9 +1,8 @@
 (function(){
   function CollectionCtrl(Fixtures){
-    this.albums = [];
+    
+    this.albums = Fixtures.getCollection();
 
-    this.albums.push(Fixtures.getAlbum());
-    this.albums.push(Fixtures.getSecondAlbum());
   }
 
   angular

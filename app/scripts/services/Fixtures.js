@@ -46,6 +46,11 @@
       return wakingAtDawn;
     };
 
+    //Used for Collection View page as a single call, where as the album view will still need to call one of the above methods
+    Fixtures.getCollection = function (){
+      return [albumPicasso, wakingAtDawn];
+    };
+
     return Fixtures;
   }
 
