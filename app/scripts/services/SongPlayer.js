@@ -48,6 +48,16 @@
     };
 
     /*
+    * @function stopSong
+    * @desc Stops song file (currentBuzzObject) and sets the .playing attribute to null
+    * @param {Object} song
+    */
+    var stopSong = function(){
+      currentBuzzObject.stop();
+      SongPlayer.currentSong.playing = null;
+    };
+
+    /*
     * @function getSongIndex
     * @desc Returns the index of the song in the album
     * @param {Object} song
@@ -74,9 +84,7 @@
         setSong(song);
         playSong(song);
       } else if(SongPlayer.currentSong === song){
-        if(currentBuzzObject.isPaused()){
-          playSong();
-        };
+        playSong(song);
       };
     };
 
@@ -93,15 +101,31 @@
 
     /*
     * @function previous
-    * @desc a public method that incremenets sets the current song's index and decrements
+    * @desc a public method that sets the song's index, decrements it, and then executes setSong and playSong accordingly
     */
     SongPlayer.previous = function(){
       var currentSongIndex = getSongIndex(SongPlayer.currentSong);
       currentSongIndex--;
 
       if (currentSongIndex < 0) {
-        currentBuzzObject.stop();
-        SongPlayer.currentSong.playing = null;
+        stopSong();
+      } else {
+        var song = currentAlbum.songs[currentSongIndex];
+        setSong(song);
+        playSong(song);
+      };
+    };
+
+    /*
+    * @function next
+    * @desc a public method that sets the song's index, increments it, and then executes setSong and playSong accordingly
+    */
+    SongPlayer.next = function(){
+      var currentSongIndex = getSongIndex(SongPlayer.currentSong);
+      currentSongIndex++;
+
+      if (currentSongIndex > currentAlbum.songs.length - 1) {
+        stopSong();
       } else {
         var song = currentAlbum.songs[currentSongIndex];
         setSong(song);
