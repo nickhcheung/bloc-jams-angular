@@ -21,7 +21,9 @@
       restrict: "E",
       templateUrl: "/templates/directives/seek_bar.html",
       replace: true,
-      scope: { },
+      scope: {
+        onChange: "&"
+      },
       link: function(scope, element, attributes){
         /*
         * @desc A value of the position in the seek bar, we set with onClickSeekBar and trackThumb
@@ -39,6 +41,14 @@
         * @type {element}
         */
         var seekBar = $(element);
+
+        attributes.$observe("value", function(newValue){
+          scope.value = newValue;
+        });
+
+        attributes.$observe("max", function(newValue){
+          scope.max = newValue;
+        });
 
         /*
         * @function percentString
@@ -78,6 +88,7 @@
         scope.onClickSeekBar = function(event){
           var percent = calculatePercent(seekBar, event);
           scope.value = percent * scope.max;
+          notifyOnChange(scope.value);
         };
 
         /*
@@ -90,6 +101,7 @@
             var percent = calculatePercent(seekBar, event);
             scope.$apply(function(){
               scope.value = percent * scope.max;
+              notifyOnChange(scope.value);
             });
           });
 
@@ -97,6 +109,17 @@
             $document.unbind("mousemove.thumb");
             $document.unbind("mouseup.thumb");
           });
+        };
+
+        /*
+        * @function notifyOnChange
+        * @desc Tests to make sure onChange is a function, and then updates the value passed to the setCurrentTime function
+        * @param {number}
+        */
+        var notifyOnChange = function(newValue){
+          if(typeof scope.onChange === "function"){
+            scope.onChange({value: newValue});
+          }
         };
 
       }
