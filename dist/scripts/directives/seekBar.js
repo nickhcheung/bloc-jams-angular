@@ -62,6 +62,15 @@
         };
 
         /*
+        * @function thumbStyle
+        * @desc Turns the percentString into an distance-left property to use in styling
+        * @return {attribute} to be used from ng-style directive
+        */
+        scope.thumbStyle = function(){
+          return {left: percentString()};
+        };
+
+        /*
         * @function onClickSeekBar
         * @desc Sets scope.value to the percentage of the seek bar at position of click
         * @param {element} event
