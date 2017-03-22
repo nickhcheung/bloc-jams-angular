@@ -86,6 +86,12 @@
     SongPlayer.currentTime = null;
 
     /*
+    * @desc Current volume
+    * @type {Number}
+    */
+    SongPlayer.volume = 80;
+
+    /*
     * @function play
     * @desc a public method that checks which item we clicked, and executes setSong and playSong accordingly
     * @param {Object} song
@@ -154,6 +160,17 @@
         if (currentBuzzObject) {
             currentBuzzObject.setTime(time);
         };
+    };
+
+    /*
+    * @function setVolume
+    * @desc Set current time (in seconds) of currently playing song
+    * @param {Number} time
+    */
+    SongPlayer.setVolume = function(volume) {
+      if(currentBuzzObject){
+        currentBuzzObject.setVolume(volume)
+      };
     };
 
     return SongPlayer;
