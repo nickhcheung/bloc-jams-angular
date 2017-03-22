@@ -37,18 +37,28 @@
       ]
     };
 
-    Fixtures.getAlbum = function(){
-      return albumPicasso;
-    };
-
-    //A way to return a second album for the collections page, will likely change later to a single function
-    Fixtures.getSecondAlbum = function(){
-      return wakingAtDawn;
-    };
+    /*
+    * @desc A public attribute to store the selected album
+    * @type {Object}
+    */
+    Fixtures.currentAlbum = null;
 
     //Used for Collection View page as a single call, where as the album view will still need to call one of the above methods
     Fixtures.getCollection = function (){
       return [albumPicasso, wakingAtDawn];
+    };
+
+    /*
+    * @function setAlbum
+    * @desc On click of the album on the collection page, it will set currentAlbum equal to the album of the item we clicked
+    * @param {number}
+    */
+    Fixtures.setAlbum = function(id){
+      if(id === 0){
+        Fixtures.currentAlbum = albumPicasso;
+      } else if(id === 1){
+        Fixtures.currentAlbum = wakingAtDawn;
+      };
     };
 
     return Fixtures;

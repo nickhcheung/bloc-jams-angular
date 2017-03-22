@@ -1,7 +1,8 @@
 (function(){
   function CollectionCtrl(Fixtures){
-    
+
     this.albums = Fixtures.getCollection();
+    this.setAlbum = Fixtures.setAlbum;
 
   }
 

@@ -7,12 +7,6 @@
     var SongPlayer = {};
 
     /*
-    * @desc Equal to the album defined in fixtures
-    * @type {Object}
-    */
-    var currentAlbum = Fixtures.getAlbum();
-
-    /*
     * @desc Buzz object audio file
     * @type {Object}
     */
@@ -37,6 +31,10 @@
       currentBuzzObject.bind("timeupdate", function(){
         $rootScope.$apply(function(){
           SongPlayer.currentTime = currentBuzzObject.getTime();
+          //conditional checks if song has ended and executes next method
+          if(currentBuzzObject.isEnded()){
+            SongPlayer.next();
+          };
         });
       });
 
@@ -70,8 +68,14 @@
     * @return index of song in the songs object of the album
     */
     var getSongIndex = function(song){
-      return currentAlbum.songs.indexOf(song);
+      return SongPlayer.currentAlbum.songs.indexOf(song);
     };
+
+    /*
+    * @desc Public Attribute equal to the current album defined in fixtures
+    * @type {Object}
+    */
+    SongPlayer.currentAlbum = Fixtures.currentAlbum;
 
     /*
     * @desc Public Object that gets set equal to the song object that is selected, used for checking conditionals
@@ -90,6 +94,12 @@
     * @type {Number}
     */
     SongPlayer.volume = 80;
+
+    /*
+    * @desc Current volume switch
+    * @type {boolean}
+    */
+    SongPlayer.volumeOn = true;
 
     /*
     * @function play
@@ -128,7 +138,7 @@
       if (currentSongIndex < 0) {
         stopSong();
       } else {
-        var song = currentAlbum.songs[currentSongIndex];
+        var song = SongPlayer.currentAlbum.songs[currentSongIndex];
         setSong(song);
         playSong(song);
       };
@@ -142,10 +152,10 @@
       var currentSongIndex = getSongIndex(SongPlayer.currentSong);
       currentSongIndex++;
 
-      if (currentSongIndex > currentAlbum.songs.length - 1) {
+      if (currentSongIndex > SongPlayer.currentAlbum.songs.length - 1) {
         stopSong();
       } else {
-        var song = currentAlbum.songs[currentSongIndex];
+        var song = SongPlayer.currentAlbum.songs[currentSongIndex];
         setSong(song);
         playSong(song);
       };
@@ -170,6 +180,21 @@
     SongPlayer.setVolume = function(volume) {
       if(currentBuzzObject){
         currentBuzzObject.setVolume(volume)
+      };
+    };
+
+    /*
+    * @function muteVolume
+    * @desc Used to toggleMute as well as set boolean for ng-show conditional on mute and sound buttons
+    */
+    SongPlayer.muteVolume = function(){
+
+      if(currentBuzzObject.isMuted() === false){
+        currentBuzzObject.toggleMute();
+        SongPlayer.volumeOn = false;
+      } else if(currentBuzzObject.isMuted() === true){
+        currentBuzzObject.toggleMute();
+        SongPlayer.volumeOn = true;
       };
     };
 
